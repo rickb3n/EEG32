@@ -1,4 +1,5 @@
 #include "ADS1118.h"
+#include <SPI.h>
 
 //dichiarazione varibili per il SPI-Setting
 uint32_t clk = 1000000; //freq. default 1 MHZ
@@ -24,7 +25,7 @@ ADS1118 adc[8] = {
 
 void setup(){
   
-  Serial.begin(256000);
+  Serial.begin(115200);
   pinMode(2, OUTPUT); //Abilitazione IO2 per il controllo del Led
   
   //Settaggio di tutte le impostazioni di ogni ADC
@@ -41,9 +42,9 @@ void setup(){
 void loop(){
   for(int i = 0 ; i < 8 ; i++){
     adc[i].setInputSelected(adc->DIFF_0_1);   //Vengono considerati gli ingressi differenziali tra 0 e 1 
-    Serial.print(String(adc[i].getMilliVolts(),10)+",");
+    Serial.print(String(adc[i].getMilliVolts(),3)+",");
     adc[i].setInputSelected(adc->DIFF_2_3);   //Vengono considerati gli ingressi differenziali tra 2 e 3
-    Serial.print(String(adc[i].getMilliVolts(),10)); if(i!=7) Serial.print(",");
+    Serial.print(String(adc[i].getMilliVolts(),3)); if(i!=7) Serial.print(",");
   }
   Serial.println("");
   digitalWrite(2, !digitalRead(2)); //led io2 toggle
